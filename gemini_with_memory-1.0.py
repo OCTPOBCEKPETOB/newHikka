@@ -58,6 +58,8 @@ class GeminiProByOCTPOBCEKPETOB(loader.Module):
             data = await response.json()
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
+    
+    @loader.command(ru_doc="Добавить ключ апи.", en_doc="Add API key")
     async def gemini_key(self, message: Message):
         args = utils.get_args_raw(message)
         if not args:
@@ -69,8 +71,9 @@ class GeminiProByOCTPOBCEKPETOB(loader.Module):
 
         self.config["gemini_key"] = args
         await utils.answer(message, "<b>Спасибо! Ключ Gemini успешно сохранён!</b>")
+        
 
-
+    @loader.command(ru_doc="Отправить запрос", en_doc="Send request")
     async def gemini(self, message: Message):
         if not self.config["gemini_key"]:
             await utils.answer(
@@ -114,6 +117,8 @@ class GeminiProByOCTPOBCEKPETOB(loader.Module):
         except Exception as e:
             await processing_msg.edit(self.strings["error"].format(str(e)))
 
+    
+    @loader.command(ru_doc="Очистить историю диалога", en_doc="Clear chat history")
     async def gemini_clear(self, message: Message):
         user_id = message.sender_id
         if user_id in self.chat_histories:
